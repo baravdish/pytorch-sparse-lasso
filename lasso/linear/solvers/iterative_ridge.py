@@ -2,7 +2,7 @@ import warnings
 from torch import Tensor
 import torch
 from scipy.optimize import minimize_scalar
-from scipy.optimize.optimize import _status_message
+from scipy.optimize import OptimizeResult
 
 from ...conjgrad import conjgrad
 from ..utils import batch_cholesky_solve
@@ -122,17 +122,20 @@ def iterative_ridge(z0, x, weight, alpha=1.0, tol=1e-5, tikhonov=1e-4, eps=None,
 
         # check for convergence
         if update.abs().sum() <= tol:
-            msg = _status_message['success']
+            # msg = _status_message['success']
+            msg = OptimizeResult['success']
             break
 
         # check for NaN
         if (fval.isnan() | update.isnan().any()):
-            msg = _status_message['nan']
+            # msg = _status_message['nan']
+            msg = OptimizeResult['nan']
             break
 
     else:
-        msg = "Warning: " + _status_message['maxiter']
-
+        #msg = "Warning: " + _status_message['maxiter']
+        msg = "Warning: " + OptimizeResult['maxiter']
+        
     if verbose:
         print(msg)
         print("         Current function value: %f" % fval)
